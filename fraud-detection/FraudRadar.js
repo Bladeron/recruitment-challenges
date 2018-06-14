@@ -4,9 +4,9 @@ function Check (filePath) {
   // READ FRAUD LINES
   let orders = []
   let fraudResults = []
-
   let fileContent = fs.readFileSync(filePath, 'utf8')
   let lines = fileContent.split('\n')
+
   for (let line of lines) {
     let items = line.split(',')
     let order = {
