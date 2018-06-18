@@ -1,33 +1,37 @@
 function cleanOrder(orders) {
-    var states = {
+    //Dictionaries to normalize
+    const STATES = {
         il: "illinois",
         ca: "california",
         ny: "new york"
     };
 
-    var roads = {
+    const ROADS = {
         "st.": "street",
         "rd.": "road",
     };
 
     for (let order of orders) {
+        let normalizers = [longName("street", ROADS), longName("state", STATES), normalizeEmail()]
 
-        function longName(field, states) {
-            for (i = 0; i < Object.keys(states).length; i++) {
-                order[field] = order[field].replace(Object.keys(states)[i], Object.values(states)[i])
+        //Funtion that gets field and dictionary to replace text in each field
+        function longName(field, dictionary) {
+            for (i = 0; i < Object.keys(dictionary).length; i++) {
+                order[field] = order[field].replace(Object.keys(dictionary)[i], Object.values(dictionary)[i])
             }
         }
 
         // Normalize email
-        let aux = order.email.split('@')
-        let atIndex = aux[0].indexOf('+')
+        function normalizeEmail() {
+            let aux = order.email.split('@')
+            order.mail = aux[0].replace(/[+.]/g, '').substring(0, (order.email.indexOf("+") - 1))
+            order.email = aux.join('@')
+        }
 
-        aux[0] = atIndex < 0 ? aux[0].replace('.', '') : aux[0].replace('.', '').substring(0, atIndex - 1)
-        order.email = aux.join('@')
-
-        //Normalize streets and states
-        longName("street", roads)
-        longName("state", states)
+        //Cycles all normalizers
+        normalizers.forEach(e => {
+            e
+        })
 
     }
     return orders

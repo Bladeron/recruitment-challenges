@@ -2,25 +2,40 @@ const fs = require('fs')
 
 function createOrder(filePath) {
     let orders = []
-    //let fileContent = "1,1,bugs@bunny.com,123 Sesame St.,New York,NY,10011,12345689010\n2,1,bugs@bunny.com,123 Sesame St.,New York,NY,10011,12345689011\n3,2,roger@rabbit.com,1234 Not Sesame rd.,Colorado,CL,10012,12345689012"
     let fileContent = fs.readFileSync(filePath, 'utf8')
     let lines = fileContent.split('\n')
 
+    class Order {
+        constructor(items) {
+            this.orderId = items[0],
+            this.dealId = items[1],
+            this.email = items[2],
+            this.street = items[3],
+            this.city = items[4],
+            this.state = items[5],
+            this.zipCode = items[6],
+            this.creditCard = items[7]
+        }
+
+        formatting() {
+            this.orderId = Number(this.orderId),
+            this.dealId = Number(this.dealId),
+            this.email = this.email.toLowerCase(),
+            this.street = this.street.toLowerCase(),
+            this.city = this.city.toLowerCase(),
+            this.state = this.state.toLowerCase()
+        
+            return this
+        }
+    }
+
     for (let line of lines) {
         let items = line.split(',')
-
-        let order = {
-            orderId: Number(items[0]),
-            dealId: Number(items[1]),
-            email: items[2].toLowerCase(),
-            street: items[3].toLowerCase(),
-            city: items[4].toLowerCase(),
-            state: items[5].toLowerCase(),
-            zipCode: items[6],
-            creditCard: items[7]
-        }
+        let order = new Order(items).formatting()
+        
         orders.push(order)
     }
+
     return orders
 }
 
