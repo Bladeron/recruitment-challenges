@@ -1,5 +1,6 @@
 const fs = require('fs')
 
+//Class to cycle and format all the orders
 function createOrder(filePath) {
     let orders = []
     let fileContent = fs.readFileSync(filePath, 'utf8')

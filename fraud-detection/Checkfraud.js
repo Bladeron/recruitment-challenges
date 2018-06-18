@@ -1,38 +1,18 @@
 function checkFraud(orders) {
     let fraudResults = []
+    let checkList = [idCheck, addressCheck]
 
+    //Compares current order with the rest of the list
     for (let i = 0; i < orders.length; i++) {
         let current = orders[i]
-        let isFraudulent = false
 
         for (let j = i + 1; j < orders.length; j++) {
-            let checkList = [idCheck, addressCheck]
-            isFraudulent = false
 
-            function idCheck() {
-                if (current.dealId === orders[j].dealId &&
-                    current.email === orders[j].email &&
-                    current.creditCard !== orders[j].creditCard) {
-                    isFraudulent = true
-                }
-            }
-
-            function addressCheck() {
-                if (current.dealId === orders[j].dealId &&
-                    current.state === orders[j].state &&
-                    current.zipCode === orders[j].zipCode &&
-                    current.street === orders[j].street &&
-                    current.city === orders[j].city &&
-                    current.creditCard !== orders[j].creditCard) {
-                    isFraudulent = true
-                }
-            }
-
-            checkList.forEach(e => {
-                e()
+            let check = checkList.some(check => {
+                return check(current, orders[j])
             })
 
-            if (isFraudulent) {
+            if (check) {
                 fraudResults.push({
                     isFraudulent: true,
                     orderId: orders[j].orderId
@@ -40,9 +20,31 @@ function checkFraud(orders) {
             }
         }
     }
-
     return fraudResults
 }
 
+//Functions to check fraud
+function idCheck(current, order) {
+    if (current.dealId === order.dealId &&
+        current.email === order.email &&
+        current.creditCard !== order.creditCard) {
+        return true;
+    }
+
+    return false;
+}
+
+function addressCheck(current, order) {
+    if (current.dealId === order.dealId &&
+        current.state === order.state &&
+        current.zipCode === order.zipCode &&
+        current.street === order.street &&
+        current.city === order.city &&
+        current.creditCard !== order.creditCard) {
+        return true;
+    }
+
+    return false;
+}
 
 module.exports = { checkFraud }
