@@ -11,6 +11,7 @@ function cleanOrder(orders) {
         "rd.": "road",
     };
 
+    //Loop all the orders comparing
     for (let order of orders) {
         let normalizers = [longName("street", ROADS), longName("state", STATES), normalizeEmail()]
 
