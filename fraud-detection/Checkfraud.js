@@ -8,11 +8,11 @@ function checkFraud(orders) {
 
         for (let j = i + 1; j < orders.length; j++) {
 
-            let check = checkList.some(check => {
+            let checks = checkList.some(check => {
                 return check(current, orders[j])
             })
 
-            if (check) {
+            if (checks) {
                 fraudResults.push({
                     isFraudulent: true,
                     orderId: orders[j].orderId
@@ -22,6 +22,7 @@ function checkFraud(orders) {
     }
     return fraudResults
 }
+
 
 //Functions to check fraud
 function idCheck(current, order) {

@@ -12,6 +12,7 @@ function cleanOrder(orders) {
         "rd.": "road",
     };
 
+    
     // Loops orders to normalize fields
     for (let order of orders) {
         let normalizers = [longName("street", ROADS), longName("state", STATES), normalizeEmail()]
